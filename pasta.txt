@@ -1,0 +1,16 @@
+CB28
+Carbonara
+25.99
+3.49
+SF57
+Sea Food
+30.99
+2.5
+GN73
+Gnochi
+28.5
+0.8
+QF18
+Quatro Formaggi
+27.8
+1.2

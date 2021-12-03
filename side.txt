@@ -1,0 +1,12 @@
+FF18
+French Fries
+7.9
+3.5
+CN25
+Rice
+8.5
+2.2
+CP09
+Mashed Potateos
+9.0
+0.2

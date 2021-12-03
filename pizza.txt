@@ -1,0 +1,24 @@
+CP28
+Capricioasa
+20.99
+3.49
+QS57
+Quattro Stagioni
+21.99
+2.5
+MR73
+Margherita
+19.5
+0.8
+PF18
+Prosciuto e Funghi
+20.8
+1.2
+QC28
+Quatro Carni
+23.99
+3.49
+QF57
+Quatro Formaggi
+25.99
+2.5

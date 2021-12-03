@@ -1,0 +1,16 @@
+KP18
+Ketchup
+2.9
+3.5
+MN25
+Mayo
+2.5
+2.2
+TZ09
+Tzatziki
+3.0
+0.2
+MS09
+Mustard
+3.0
+0.2

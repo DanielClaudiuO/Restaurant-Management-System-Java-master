@@ -1,0 +1,24 @@
+WT42
+Water
+3.0
+1.2
+CC16
+Coca Cola
+7.4
+3.4
+FT31
+Fanta
+7.0
+2.99
+LMN13
+Lemonade
+8.0
+1.0
+FRS13
+Fresh
+9.9
+1.0
+CFF13
+Coffe
+5.5
+1.0

@@ -1,0 +1,16 @@
+LC18
+Lava Cake
+7.9
+3.5
+CC25
+Chees Cake
+8.5
+2.2
+IC09
+Ice Cream
+9.0
+0.2
+PC23
+Pancakes
+9.0
+0.2

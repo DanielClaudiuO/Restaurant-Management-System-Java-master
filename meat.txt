@@ -1,0 +1,21 @@
+CH28
+Chicken
+15.99
+3.49
+DK57
+Duck
+17.99
+2.5
+HB73
+Hamburger
+19.5
+0.8
+SQ18
+Steak
+20.8
+1.2
+PC18
+Pork Chops
+28.8
+1.2
+
