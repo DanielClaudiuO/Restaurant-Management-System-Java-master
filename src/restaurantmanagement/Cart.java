@@ -13,10 +13,10 @@ import java.util.Scanner;
 
 public class Cart {
 
-    private ArrayList<String> name = new ArrayList<>(); //setting the arraylist as private
+    private ArrayList<String> name = new ArrayList<>();
     private ArrayList<Integer> qty = new ArrayList<>();
     private ArrayList<Double> price = new ArrayList<>();
-    private ArrayList<Double> profit = new ArrayList<>();
+    private ArrayList<Double> taxes = new ArrayList<>();
     Scanner input = new Scanner(System.in);
 
     public Cart(ArrayList<Order> pzcart, ArrayList<Order> pscart, ArrayList<Order> mtcart, ArrayList<Order> socart, ArrayList<Order> sscart, ArrayList<Order> dscart, ArrayList<Order> bocart) { //arraylist items being passed
@@ -24,58 +24,65 @@ public class Cart {
         ArrayList<String> iname = new ArrayList<>();
         ArrayList<Integer> iqty = new ArrayList<>();
         ArrayList<Double> iprice = new ArrayList<>();
-        ArrayList<Double> iprofit = new ArrayList<>();
+        ArrayList<Double> itaxes = new ArrayList<>();
 
-        for (int i = 0; i < pzcart.size(); i++) { //each datas inside the arraylist is being separated into another arraylist of the same data type
+        for (int i = 0; i < pzcart.size(); i++) {
             iname.addAll(pzcart.get(i).getOName());
             iqty.addAll(pzcart.get(i).getQuantity());
             iprice.addAll(pzcart.get(i).getPrice());
-            iprofit.addAll(pzcart.get(i).getProfit());
+            itaxes.add(0.09);
         }
 
         for (int i = 0; i < pscart.size(); i++) {
             iname.addAll(pscart.get(i).getOName());
             iqty.addAll(pscart.get(i).getQuantity());
             iprice.addAll(pscart.get(i).getPrice());
-            iprofit.addAll(pscart.get(i).getProfit());
+            itaxes.add(0.09);
         }
 
         for (int i = 0; i < mtcart.size(); i++) {
             iname.addAll(mtcart.get(i).getOName());
             iqty.addAll(mtcart.get(i).getQuantity());
             iprice.addAll(mtcart.get(i).getPrice());
-            iprofit.addAll(mtcart.get(i).getProfit());
+            itaxes.add(0.09);
+        }
+        for (int i = 0; i < socart.size(); i++) {
+            iname.addAll(socart.get(i).getOName());
+            iqty.addAll(socart.get(i).getQuantity());
+            iprice.addAll(socart.get(i).getPrice());
+            itaxes.add(0.09);
+        }
+        for (int i = 0; i < sscart.size(); i++) {
+            iname.addAll(sscart.get(i).getOName());
+            iqty.addAll(sscart.get(i).getQuantity());
+            iprice.addAll(sscart.get(i).getPrice());
+            itaxes.add(0.09);
+        }
+        for (int i = 0; i < dscart.size(); i++) {
+            iname.addAll(dscart.get(i).getOName());
+            iqty.addAll(dscart.get(i).getQuantity());
+            iprice.addAll(dscart.get(i).getPrice());
+            itaxes.add(0.10);
+        }
+        for (int i = 0; i < bocart.size(); i++) {
+            iname.addAll(bocart.get(i).getOName());
+            iqty.addAll(bocart.get(i).getQuantity());
+            iprice.addAll(bocart.get(i).getPrice());
+            if(iname.get(i)== "Lemonade" || iname.get(i)=="Fresh"){
+                itaxes.add(0.05);
+            }else{
+                itaxes.add(0.12);
+            }
         }
 
         this.name = iname;
         this.qty = iqty;
         this.price = iprice;
-        this.profit = iprofit;
+        this.taxes = itaxes;
 
     }
 
-    public Cart() {
-
-    }
-
-    public ArrayList<String> getName() {
-        return name;
-    }
-
-    public ArrayList<Integer> getQuantity() {
-        return qty;
-    }
-
-    public ArrayList<Double> getPrice() {
-        return price;
-    }
-
-    public ArrayList<Double> getProfit() {
-        return profit;
-    }
-
-    double getSubtotal() { //calculate subtotal
-
+    double getSubtotal() {
         double subtotal = 0.0;
         for (int i = 0; i < name.size(); i++) {
             double amt;
@@ -91,7 +98,7 @@ public class Cart {
         double gross = 0.0;
         for (int i = 0; i < name.size(); i++) {
             double grs;
-            grs = profit.get(i) * qty.get(i);
+            grs = taxes.get(i) * qty.get(i);
             gross = gross + grs;
         }
 
@@ -120,26 +127,28 @@ public class Cart {
 
     public Object displayCart(String id, String staff) { 
 
-        DecimalFormat df = new DecimalFormat("#.##"); //this is to format to decimal value of the price
+        DecimalFormat df = new DecimalFormat("#.##");
         String orderTime = getTime(); //getting time
         String orderDate = getDate(); //getting date
         System.out.println("Order ID: " + id + "                         " + orderTime);
         System.out.println("Staff Name: " + staff + "                    " + orderDate);
         int count = 1;
-        System.out.printf("%2s %20s %5s %10s", "No", "NAME", "QTY", "PRICE"); //formatting of the items in proper order
+        System.out.printf("%2s %20s %5s %10s", "No", "NAME", "QTY", "PRICE");
         System.out.println();
-        for (int i = 0; i < name.size(); i++) { //All the items inside the cart will be looped and displayed
+        double taxtotal = 0;
+        for (int i = 0; i < name.size(); i++) {
             System.out.println("-------------------------------------------------");
             System.out.format("%2d %20s %5s %10s", count, name.get(i), qty.get(i), df.format((price.get(i) * qty.get(i))));
             System.out.println();
             count++;
+            taxtotal+=(price.get(i)*taxes.get(i))*qty.get(i);
         }
-        double stotal = getSubtotal(); //calling getSubtotal funtion
-        double taxtotal = (getSubtotal() * 0.06); //adding the tax to subtotal
-        double ftotal = stotal + taxtotal; //Final total is the sum of subtotal and taxttotal
+        double stotal = getSubtotal();
+
+        double ftotal = stotal + taxtotal;
         System.out.println("\n-------------------------------------------------");
         System.out.println("\nSUBTOTAL                       " + df.format(stotal));
-        System.out.println("GOVT TAX(%6)                   " + df.format(taxtotal));
+        System.out.println("VAT TAX                         " + df.format(taxtotal));
         System.out.println("Total                          " + df.format(ftotal));
         //all the items is now being passed to create an object dummy for the class Receipt
         Receipt dummy = new Receipt(id, staff, orderTime, orderDate, name, qty, price, getGross(), stotal, taxtotal, ftotal); 
@@ -176,7 +185,7 @@ public class Cart {
             name.clear(); //else all the item in cart will be cleared 
             qty.clear();
             price.clear();
-            profit.clear();
+            taxes.clear();
             s = 0; //s will be set to 0, so the entire order is not counted. This will also wont make the Order ID to increase
 
         }

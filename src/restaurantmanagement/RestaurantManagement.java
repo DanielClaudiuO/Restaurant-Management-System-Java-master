@@ -5,9 +5,6 @@
  */
 package restaurantmanagement;
 
-/**
- * @author Michael Depp
- */
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -23,34 +20,36 @@ import java.util.Scanner;
 public class RestaurantManagement {
 
     ArrayList<Item> pzmenu = new ArrayList<>();
-    ArrayList<Item> pmenu = new ArrayList<>(); //Creating an arraylist based on the Item Class
+    ArrayList<Item> pmenu = new ArrayList<>();
     ArrayList<Item> mmenu = new ArrayList<>();
     ArrayList<Item> smenu = new ArrayList<>();
     ArrayList<Item> ssmenu = new ArrayList<>();
-    ArrayList<Item> dsmenu = new ArrayList<>(); //Creating an arraylist based on the Item Class
+    ArrayList<Item> dsmenu = new ArrayList<>();
     ArrayList<Item> bmenu = new ArrayList<>();
 
-    ArrayList<Receipt> allreceipt = new ArrayList<>(); //Creating an arraylist based on Receipt Class
+    ArrayList<Receipt> allreceipt = new ArrayList<>();
     Scanner input = new Scanner(System.in);
-    int count = 101; //Initializing count as 101. So the order number will start from 101
+    int count = 101;
+
+    private String enter="Enter Anything to continue...";
 
     public static void main(String[] args) throws IOException {
 
-        clearScreen(); //To clear the cmd
-        RestaurantManagement ass1 = new RestaurantManagement(); //a new instance for this main
-        ass1.start(); //Calling function start
+        clearScreen();
+        RestaurantManagement ass1 = new RestaurantManagement();
+        ass1.start();
 
     }
 
     public static void writeNew(ArrayList<Item> editlist, String type) throws IOException {
-        File fout = new File(type + ".txt"); //f name depends on the type variable that being passed
-        FileOutputStream fos = new FileOutputStream(fout); //creating new txt file
+        File fout = new File(type + ".txt");
+        FileOutputStream fos = new FileOutputStream(fout);
 
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
 
-        for (int i = 0; i < editlist.size(); i++) { //will loop until the arraylist size
-            bw.write(editlist.get(i).getId()); //writing the line based on the arraylist
-            bw.newLine(); //going the nextline
+        for (int i = 0; i < editlist.size(); i++) {
+            bw.write(editlist.get(i).getId());
+            bw.newLine();
             bw.write(editlist.get(i).getName());
             bw.newLine();
             bw.write(Double.toString(editlist.get(i).getPrice()));
@@ -59,10 +58,10 @@ public class RestaurantManagement {
             bw.newLine();
         }
 
-        bw.close(); //closing the file
+        bw.close();
     }
 
-    public static void clearScreen() { //to clear the text that already displayed in the cmd
+    public static void clearScreen() {
 
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -73,15 +72,15 @@ public class RestaurantManagement {
 
     public void start() throws IOException {
 
-        initData(); //Calling initData function to load the menu items to the program
-        String staff = login(); //Calling login function, staff name will be initialize here
+        initData();
+        String staff = login();
         String option = "";
-        option = menu(); //Calling menu function, option will gets it value from the return value
-        while (!option.trim().equalsIgnoreCase("Q")) { //This will loop until the user enter q for quit
+        option = menu();
+        while (!option.trim().equalsIgnoreCase("Q")) {
             switch (option) {
                 case "1":
-                    clearScreen(); //clearing the cmd
-                    PlaceOrder(staff); //calling PlaceOrder function and passing the staff variable
+                    clearScreen();
+                    PlaceOrder(staff);
                     break;
                 case "2":
                     clearScreen();
@@ -114,24 +113,24 @@ public class RestaurantManagement {
             System.out.println("1. Dine In");
             System.out.println("2. Take Away");
             System.out.println("M. Go to main Menu");
-            choose1 = input.next(); //Getting choice input
+            choose1 = input.next();
             switch (choose1) {
 
                 case "1":
                     clearScreen();
                     OrderID = "DI" + count;
-                    success = ordering(OrderID, choose1, staff); //Calling ordering function and passing the required values
+                    success = ordering(OrderID, choose1, staff);
                     break;
                 case "2":
                     clearScreen();
-                    OrderID = "TA" + count; //Setting the order ID from the count and adding the TA word to indicate its a TAKE AWAY Order
+                    OrderID = "TA" + count;
                     success = ordering(OrderID, choose1, staff);
                     break;
                 case "M":
                     break;
             }
-            if (success == 1) { //if the return s value which is the success is equal to 1, it indicates the success of the previous order
-                count++; //So the count will be plus 1 so the next orderId will have a new number.
+            if (success == 1) {
+                count++;
             }
         }
     }
@@ -139,7 +138,7 @@ public class RestaurantManagement {
     public void OrderStatus() {
 
         String choose2 = "";
-        while (!choose2.trim().equalsIgnoreCase("M")) { //Will loop until user enter M
+        while (!choose2.trim().equalsIgnoreCase("M")) {
             System.out.println("******************* Order Status ******************");
             System.out.println("Select from Options or Enter ‘M’ for Main Menu");
             System.out.println("1. Check Order Status");
@@ -151,22 +150,20 @@ public class RestaurantManagement {
                     String statusid;
                     int found = 404;
                     System.out.println("Enter Your Order ID: ");
-                    statusid = input.next(); //The user have to enter his Order ID
+                    statusid = input.next();
 
-                    for (int i = 0; i < allreceipt.size(); i++) { //This will loop the arraylist allreceipt which store all the orders to find the order ID
+                    for (int i = 0; i < allreceipt.size(); i++) {
 
                         if (statusid.equalsIgnoreCase(allreceipt.get(i).getOrderId())) {
-                            found = i; //if it found the it will copy the index of the arraylist that the order Id is being stored
+                            found = i;
                         }
                     }
 
-                    if (found != 404) { //if the ORDER ID found
-
-                        //A new object will be created for the class Receipt and all the infos from the arraylist allreceipt will be passed into the object.
+                    if (found != 404) {
                         Receipt os = new Receipt((allreceipt.get(found).getOrderId()), (allreceipt.get(found).getStaff()), (allreceipt.get(found).getOrderTime()), (allreceipt.get(found).getOrderDate()), (allreceipt.get(found).getName()), (allreceipt.get(found).getQuantity()), (allreceipt.get(found).getPrice()), (allreceipt.get(found).getProfit()), (allreceipt.get(found).getSubtotal()), (allreceipt.get(found).getTaxtotal()), (allreceipt.get(found).getFtotal()));
-                        os.Order(); //calling function Order in the class Receipt
+                        os.Order();
                     } else {
-                        System.out.println("Order ID didnt exist!"); //Error message if the order ID is wrong
+                        System.out.println("Order ID didnt exist!");
 
                     }
                     break;
@@ -181,12 +178,17 @@ public class RestaurantManagement {
 
         String choose3 = "";
         clearScreen();
-        while (!choose3.trim().equalsIgnoreCase("M")) { //Will loop until user enter M
+        while (!choose3.trim().equalsIgnoreCase("M")) {
             System.out.println("******************* Edit Price ******************");
             System.out.println("Select from Options or Enter ‘M’ for Main Menu");
-            System.out.println("1. Food");
-            System.out.println("2. Beverage");
-            System.out.println("3. Side");
+            System.out.println("1. Pizza");
+            System.out.println("2. Pasta");
+            System.out.println("3. Meat");
+            System.out.println("4. Side");
+            System.out.println("5. Sauce");
+            System.out.println("6. Desert");
+            System.out.println("7. Drink");
+            System.out.println("8. Cart");
             System.out.println("M. Go to main Menu");
             Menu pz = new Menu(pzmenu);
             Menu ps = new Menu(pmenu);
@@ -200,28 +202,39 @@ public class RestaurantManagement {
             switch (choose3) {
 
                 case "1":
-                    type = "food"; //Setting the item type based on the choice user enter
-                    pz.displayItem(); //Displaying all the items under the arraylist
-                    pzmenu = pz.editItem(); //setting the existing arraylist based on the return value by calling function editItem
-                    File f = new File("pizza.txt"); //setting the file name as the  present txt file name that storing all the datas
+                    type = "pizza";
+                    pz.displayItem();
+                    pzmenu = pz.editItem();
+                    File f = new File("pizza.txt");
                     if (f.exists()) {
-                        f.delete(); //it will delete the txt file that present now
+                        f.delete();
                     }
-                    writeNew(pzmenu, type); //Calling function writeNew and passing list type and arraylist
+                    writeNew(pzmenu, type);
                     System.out.println("Price Edited Succesfully!");
                     break;
                 case "2":
-                    type = "drink";
-                    bo.displayItem();
-                    bmenu = bo.editItem();
-                    File b = new File("drink.txt");
-                    if (b.exists()) {
-                        b.delete();
+                    type = "pasta";
+                    ps.displayItem();
+                    pmenu = ps.editItem();
+                    File c = new File("pasta.txt");
+                    if (c.exists()) {
+                        c.delete();
                     }
-                    writeNew(bmenu, type);
+                    writeNew(pmenu, type);
                     System.out.println("Price Edited Succesfully!");
                     break;
                 case "3":
+                    type = "meat";
+                    mt.displayItem();
+                    mmenu = mt.editItem();
+                    File b = new File("meat.txt");
+                    if (b.exists()) {
+                        b.delete();
+                    }
+                    writeNew(mmenu, type);
+                    System.out.println("Price Edited Succesfully!");
+                    break;
+                case "4":
                     type = "side";
                     sd.displayItem();
                     smenu = sd.editItem();
@@ -230,6 +243,39 @@ public class RestaurantManagement {
                         s.delete();
                     }
                     writeNew(smenu, type);
+                    System.out.println("Price Edited Succesfully!");
+                    break;
+                case "5":
+                    type = "sauce";
+                    sa.displayItem();
+                    ssmenu = sa.editItem();
+                    File d = new File("sauce.txt");
+                    if (d.exists()) {
+                        d.delete();
+                    }
+                    writeNew(ssmenu, type);
+                    System.out.println("Price Edited Succesfully!");
+                    break;
+                case "6":
+                    type = "desert";
+                    ds.displayItem();
+                    dsmenu = ds.editItem();
+                    File e = new File("desert.txt");
+                    if (e.exists()) {
+                        e.delete();
+                    }
+                    writeNew(dsmenu, type);
+                    System.out.println("Price Edited Succesfully!");
+                    break;
+                case "7":
+                    type = "drink";
+                    bo.displayItem();
+                    bmenu = bo.editItem();
+                    File g = new File("drink.txt");
+                    if (g.exists()) {
+                        g.delete();
+                    }
+                    writeNew(bmenu, type);
                     System.out.println("Price Edited Succesfully!");
                     break;
                 case "M":
@@ -250,7 +296,7 @@ public class RestaurantManagement {
         ArrayList<Order> ssorder = new ArrayList<>();
         ArrayList<Order> dsorder = new ArrayList<>();
         ArrayList<Order> boorder = new ArrayList<>();
-        while (!Di.trim().equalsIgnoreCase("B")) { //Will loop until user enters B
+        while (!Di.trim().equalsIgnoreCase("B")) {
 
             String title;
             if ("1".equals(type)) {
@@ -263,105 +309,103 @@ public class RestaurantManagement {
                 title = "";
             }
             System.out.println("******************* " + title + " ******************");
-            ordermenu.displayMenu(); //calling displayMenu function inside Menu Class
-            Menu pz = new Menu(pzmenu);
-            Menu ps = new Menu(pmenu);
-            Menu mt = new Menu(mmenu);
-            Menu so = new Menu(smenu);
-            Menu ss = new Menu(ssmenu);
-            Menu ds = new Menu(dsmenu);
-            Menu bo = new Menu(bmenu);
+            ordermenu.displayMenu();
+            var pz = new Menu(pzmenu);
+            var ps = new Menu(pmenu);
+            var mt = new Menu(mmenu);
+            var so = new Menu(smenu);
+            var ss = new Menu(ssmenu);
+            var ds = new Menu(dsmenu);
+            var bo = new Menu(bmenu);
             Di = input.next();
 
             switch (Di) {
 
-                case "1": //When food is selected
-                    pz.displayItem(); //Calling displayItem function from Menu class
-                    pzorder.addAll(pz.chooseItem()); //Calling chooseItem function and the return value will be added to pzorder arraylist
-                    System.out.print("Enter Anything to continue...");
-                    input.next(); //This is like getch funtion
-                    clearScreen(); //To clear the cmd
+                case "1":
+                    pz.displayItem();
+                    pzorder.addAll(pz.chooseItem());
+                    System.out.print(enter);
+                    input.next();
+                    clearScreen();
                     break;
-                case "2": //When pasta is selected
+                case "2":
                     ps.displayItem();
                     psorder.addAll(ps.chooseItem());
-                    System.out.print("Enter Anything to continue...");
+                    System.out.print(enter);
                     input.next();
                     clearScreen();
                     break;
                 case "3":
                     mt.displayItem();
                     mtorder.addAll(mt.chooseItem());
-                    System.out.print("Enter Anything to continue...");
+                    System.out.print(enter);
                     input.next();
                     clearScreen();
                     break;
                 case "4":
                     so.displayItem();
                     soorder.addAll(so.chooseItem());
-                    System.out.print("Enter Anything to continue...");
+                    System.out.print(enter);
                     input.next();
                     clearScreen();
                     break;
                 case "5":
                     ss.displayItem();
                     ssorder.addAll(ss.chooseItem());
-                    System.out.print("Enter Anything to continue...");
+                    System.out.print(enter);
                     input.next();
                     clearScreen();
                     break;
                 case "6":
                     ds.displayItem();
-                    dsorder.addAll(ss.chooseItem());
-                    System.out.print("Enter Anything to continue...");
+                    dsorder.addAll(ds.chooseItem());
+                    System.out.print(enter);
                     input.next();
                     clearScreen();
                     break;
                 case "7":
                     bo.displayItem();
-                    boorder.addAll(ss.chooseItem());
-                    System.out.print("Enter Anything to continue...");
+                    boorder.addAll(bo.chooseItem());
+                    System.out.print(enter);
                     input.next();
                     clearScreen();
                     break;
-                case "8": //When cart is selected
+                case "8":
                     int check = 1;
-                    if (pzorder.size() == 0 || psorder.size() == 0 || mtorder.size() == 0 || soorder.size() == 0 || ssorder.size() == 0 || dsorder.size() == 0 || boorder.size() == 0) { //this line will check whether any items have been added or no
-                        check = 0; //If there is no any item has been added, the check will be set to 0
-
-
+                    if (pzorder.isEmpty() && psorder.isEmpty() && mtorder.isEmpty() && soorder.isEmpty() && ssorder.isEmpty() && dsorder.isEmpty() && boorder.isEmpty()) {
+                        check = 0;
                     }
 
-                    if (check != 0) { //if the check is not 0, which means there is item been added
-                        Cart dn = new Cart(pzorder, psorder, mtorder,soorder, ssorder, dsorder, boorder ); //creating a object for the class Cart
-                        Receipt rc = new Receipt(); //creating an object for the class Receipt
-                        rc = (Receipt) (dn.displayCart(order, staff)); //Calling function displayCart inside Cart and copying the value to rc object
+                    if (check != 0) {
+                        Cart dn = new Cart(pzorder, psorder, mtorder, soorder, ssorder, dsorder, boorder);
+                        Receipt rc = new Receipt();
+                        rc = (Receipt) (dn.displayCart(order, staff));
                         System.out.println("\n-------------------------------------------------");
-                        System.out.println("Confirm Order & Pay ? (y/n)"); //Asking user whether he want to pay or not
+                        System.out.println("Confirm Order & Pay ? (y/n)");
                         String pay = input.next();
-                        s = dn.confirmOrder(pay); //Calling the payment function and this will return variable s indicating the success of the payment
+                        s = dn.confirmOrder(pay);
                         if ("y".equalsIgnoreCase(pay)) {
-                            allreceipt.add(rc); //The receipt of this order will be added to allreceipt class, which will be use to track the order later
+                            allreceipt.add(rc);
                         }
-                    } else { //if there is no any item in any of the arraylist
+                    } else {
                         System.out.println("You havent order anything!");
                     }
-                    System.out.print("Enter Anything to continue...");
+                    System.out.print(enter);
                     input.next();
-                    Di = "B"; //will set Di to B to break the loop
-                    clearScreen(); //to clear cmd
+                    Di = "B";
+                    clearScreen();
                     break;
                 case "B":
                     break;
             }
         }
 
-        return (s); //program will return s which indicates success of the order
+        return (s);
     }
 
     public String menu() {
 
-        clearScreen(); //clearing cmd
+        clearScreen();
         System.out.println("******************* Welcome To Restaurant X ******************");
         System.out.println("Select any Option you want to perform. Enter ‘Q’ to quit the program ");
         System.out.println("1. Place Order");
@@ -369,41 +413,41 @@ public class RestaurantManagement {
         System.out.println("3. Edit Price");
         System.out.println("");
 
-        return input.next(); //It will return the option that has been key-in
+        return input.next();
     }
 
     public String login() {
 
-        String[] worker = new String[3]; //An array created with 3 users
+        String[] worker = new String[3];
         worker[0] = "Daniel";
         worker[1] = "Claudiu";
         worker[2] = "Leinad";
 
-        String[] pwd = new String[3]; //Password has been hard coded into the array
+        String[] pwd = new String[3];
         pwd[0] = "asd";
         pwd[1] = "qwe";
         pwd[2] = "zxc";
 
         String uname = "", pass;
-        int temp = 0; //for loop
+        int temp = 0;
         System.out.println("******************* Login ******************");
         System.out.println("");
         while (temp == 0) {
-            int invalidname = 0;
-            int invalidpass = 0;
+            var invalidname = 0;
+            var invalidpass = 0;
             System.out.println("Enter Username: ");
-            uname = input.next(); //Getting username
+            uname = input.next();
             System.out.println("Enter Password: ");
-            pass = input.next(); //Getting password
-            for (int i = 0; i < worker.length; i++) //Will loop according to the array size
+            pass = input.next();
+            for (int i = 0; i < worker.length; i++)
             {
-                if (uname.equalsIgnoreCase(worker[i])) //if a username matched
+                if (uname.equalsIgnoreCase(worker[i]))
                 {
-                    if (pass.equals(pwd[i])) //it will check whether the username index and password index is matching or no
-                    {                        //this technique use the real world algorithm
+                    if (pass.equals(pwd[i]))
+                    {
                         System.out.println("Login Succesful!");
                         System.out.println("Welcome " + worker[i]);
-                        uname = worker[i]; //username will be copied to this variable
+                        uname = worker[i];
                         temp = 1;
                         invalidname = 0;
                         System.out.println("Enter anything to continue...");
@@ -416,25 +460,25 @@ public class RestaurantManagement {
                 }
             }
 
-            if (invalidname == worker.length) { //Error message for wrong username & password
+            if (invalidname == worker.length) {
                 if (invalidpass == 0) {
                     System.out.println("Wrong Username!");
                 }
             }
 
-            if (invalidpass == 1) //this is for the user who put correct username but wrong password
+            if (invalidpass == 1)
             {
                 System.out.println("Password Mismatch!");
             }
 
         }
 
-        return (uname); //returning to uname to the staff variable
+        return (uname);
     }
 
     public void initData() throws FileNotFoundException, IOException {
 
-        pzmenu.clear(); //clearing the arraylist first
+        pzmenu.clear();
         bmenu.clear();
         smenu.clear();
         pmenu.clear();
@@ -443,16 +487,16 @@ public class RestaurantManagement {
         dsmenu.clear();
 
 
-        String filename1 = "pizza.txt"; //Setting the filename to our txt file name
-        try (BufferedReader br = new BufferedReader(new FileReader(filename1))) { //opening the text file
-            while (br.ready()) { //while there is a new line this will loop
+        String filename1 = "pizza.txt";
+        try (BufferedReader br = new BufferedReader(new FileReader(filename1))) {
+            while (br.ready()) {
 
-                String id = br.readLine(); // the id copied the line from the text file
+                String id = br.readLine();
                 String name = br.readLine();
-                Double price = Double.parseDouble(br.readLine()); //Copying the string into a double data
+                Double price = Double.parseDouble(br.readLine());
                 Double profit = Double.parseDouble(br.readLine());
-                Item pz = new Item(id, name, price, profit); //a new instance being created for the class item with the above datas
-                pzmenu.add(pz); //that object being added to this same data type arraylist
+                Item pz = new Item(id, name, price, profit);
+                pzmenu.add(pz);
             }
         }
 
@@ -483,7 +527,7 @@ public class RestaurantManagement {
         }
 
         String filename4 = "pasta.txt";
-        try (BufferedReader pr = new BufferedReader(new FileReader(filename3))) {
+        try (BufferedReader pr = new BufferedReader(new FileReader(filename4))) {
             while (pr.ready()) {
 
                 String id = pr.readLine();
@@ -496,7 +540,7 @@ public class RestaurantManagement {
         }
 
         String filename5 = "meat.txt";
-        try (BufferedReader mr = new BufferedReader(new FileReader(filename3))) {
+        try (BufferedReader mr = new BufferedReader(new FileReader(filename5))) {
             while (mr.ready()) {
 
                 String id = mr.readLine();
@@ -509,7 +553,7 @@ public class RestaurantManagement {
         }
 
         String filename6 = "sauce.txt";
-        try (BufferedReader qr = new BufferedReader(new FileReader(filename3))) {
+        try (BufferedReader qr = new BufferedReader(new FileReader(filename6))) {
             while (qr.ready()) {
 
                 String id = qr.readLine();
@@ -521,7 +565,7 @@ public class RestaurantManagement {
             }
         }
         String filename7 = "desert.txt";
-        try (BufferedReader der = new BufferedReader(new FileReader(filename3))) {
+        try (BufferedReader der = new BufferedReader(new FileReader(filename7))) {
             while (der.ready()) {
 
                 String id = der.readLine();

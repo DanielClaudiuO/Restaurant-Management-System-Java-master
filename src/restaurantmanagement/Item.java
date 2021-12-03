@@ -5,15 +5,12 @@
  */
 package restaurantmanagement;
 
-/**
- *
- * @author Michael Depp
- */
+
 public class Item {
     
-    private String id; //setting id as private
+    private String id;
     private String name;
-    protected double price; //setting price as protected not public cause have to call in another class
+    protected double price;
     protected double profit;
     
 
@@ -21,11 +18,10 @@ public class Item {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.profit = profit;
-    }
+        this.profit = profit;}
 
     Item() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     public String getId() {

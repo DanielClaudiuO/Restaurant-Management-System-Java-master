@@ -5,10 +5,6 @@
  */
 package restaurantmanagement;
 
-/**
- *
- * @author Michael Depp
- */
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -101,45 +97,45 @@ public class Receipt {
 
         String curr, status;
         int diff;
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss"); //formatting the time by removing other infos like day month and year, cause we need time only
-        Date datey = new Date(); //getting the time
-        curr = formatter.format(datey); //the time being copied to curr
+        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
+        Date datey = new Date();
+        curr = formatter.format(datey);
         Date date1 = null;
         try {
-            date1 = formatter.parse(orderTime); //getting the time that passed during the order time
-        } catch (ParseException ex) {
-            Logger.getLogger(Receipt.class.getName()).log(Level.SEVERE, null, ex); //exception for parsing
-        }
-        Date date2 = null;
-        try {
-            date2 = formatter.parse(curr); //date 2 is the current time
+            date1 = formatter.parse(orderTime);
         } catch (ParseException ex) {
             Logger.getLogger(Receipt.class.getName()).log(Level.SEVERE, null, ex);
         }
-        long difference = date2.getTime() - date1.getTime(); //Order time and current time being minused
-        diff = (int) (long) (difference / 1000); //the difference is set to seconds
+        Date date2 = null;
+        try {
+            date2 = formatter.parse(curr);
+        } catch (ParseException ex) {
+            Logger.getLogger(Receipt.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        long difference = date2.getTime() - date1.getTime();
+        diff = (int) (long) (difference / 1000);
 
-        if (diff < 120) { //if the order time is less than 2 minutes / 120 seconds
-            status = "Order Received"; //it will set to Order Received
-        } else if (diff >= 120 && diff < 240) { //If it is more than 2 minits and less than 4 minits
-            status = "Cooking"; //it will set to Cooking
+        if (diff < 120) {
+            status = "Order Received";
+        } else if (diff >= 120 && diff < 240) {
+            status = "Cooking";
         } else {
-            status = "Delivered"; //If it is more than that it will set to Delivered
+            status = "Delivered";
         }
 
-        return (status); //returning the status
+        return (status);
     }
 
     public void Order() {
 
-        DecimalFormat df = new DecimalFormat("#.##"); //To format the double values into 2 digit place.
+        DecimalFormat df = new DecimalFormat("#.##");
         System.out.println(" ");
         System.out.println("Order ID: " + orderId + "                         " + orderTime);
         System.out.println("Staff Name: " + staff + "                    " + orderDate);
         int count = 1;
         System.out.printf("%2s %20s %5s %10s", "No", "NAME", "QTY", "PRICE");
         System.out.println();
-        for (int i = 0; i < name.size(); i++) { //It will loop through the arraylist and print all the items
+        for (int i = 0; i < name.size(); i++) {
             System.out.println("-------------------------------------------------");
             System.out.format("%2d %20s %5s %10s", count, (name.get(i)), (qty.get(i)), df.format((price.get(i)) * (qty.get(i))));
             System.out.println();
@@ -147,10 +143,10 @@ public class Receipt {
         }
         System.out.println("\n-------------------------------------------------");
         System.out.println("\nSUBTOTAL                       " + df.format(stotal));
-        System.out.println("GOVT TAX(%6)                   " + df.format(taxtotal));
+        System.out.println("VAT TAX                   " + df.format(taxtotal));
         System.out.println("Total                          " + df.format(ftotal));
         System.out.println("\n-------------------------------------------------");
-        System.out.println("Order Status: " + timecalc()); //Calling funcion timecalc
+        System.out.println("Order Status: " + timecalc());
         System.out.println(" ");
 
     }

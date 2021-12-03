@@ -7,19 +7,16 @@ package restaurantmanagement;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author Michael Depp
- */
+
 public class Order {
     
     private ArrayList<String> OName = new ArrayList<>();
-    protected ArrayList<Integer> quantity = new ArrayList<>(); //setting protected not public cause being used in another class
+    protected ArrayList<Integer> quantity = new ArrayList<>();
     private ArrayList<Double> Oprice = new ArrayList<>();
     private ArrayList<Double> Oprofit = new ArrayList<>();
     
 
-    public Order (ArrayList<String> OName, ArrayList<Integer> quantity, ArrayList<Double> Oprice, ArrayList<Double> Oprofit) {//double subtotal, double tax, double ftotal, String Otime) {
+    public Order (ArrayList<String> OName, ArrayList<Integer> quantity, ArrayList<Double> Oprice, ArrayList<Double> Oprofit) {
 
         this.OName = OName;
         this.quantity = quantity;
@@ -28,7 +25,7 @@ public class Order {
     }
 
     Order() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new UnsupportedOperationException("Not supported yet.");
     }
     
     
